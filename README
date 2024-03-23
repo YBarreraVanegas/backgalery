@@ -3,10 +3,11 @@ Backend API Documentation
 
 Este backend maneja las solicitudes enviadas desde el front y crea una API REST para gestionar los datos recibidos.
 
----
-    Documentación del Archivo de Inicio del Servidor;
+---;
+Documentación del Archivo de Inicio del Servidor;
 
-    Este archivo inicia el servidor de la aplicación y lo configura para escuchar las solicitudes entrantes en un puerto específico.
+
+ Este archivo inicia el servidor de la aplicación y lo configura para escuchar las solicitudes entrantes en un puerto específico.
 
  1. Importación de Módulos y Configuración
     - `import app from './src/app.js';`: Importa el módulo principal de la aplicación que contiene la configuración de Express y las rutas.
@@ -29,38 +30,40 @@ Este backend maneja las solicitudes enviadas desde el front y crea una API REST 
 
  En resumen, este archivo se encarga de iniciar el servidor de la aplicación y configurarlo para escuchar las solicitudes entrantes en el puerto especificado.También incluye la configuración del EventEmitter para evitar advertencias por exceso de escuchadores y muestra un mensaje en la consola cuando el servidor está listo para recibir solicitudes.
 
+
+
 ---;
 Documentación de routes.js;
+
     Este archivo define las rutas y maneja las solicitudes HTTP en el backend utilizando Express y Multer para el manejo de archivos.
 
- 1. Importación de módulos y configuración:
+  1. Importación de módulos y configuración:
 
 - `import { Router } from "express";`: Importa el módulo Router de Express para definir las rutas.
-  - `import { config } from "dotenv";`: Importa la función config de dotenv para cargar variables de entorno desde un archivo`.env`.
-  - `import multer from "multer";`: Importa el módulo Multer para el manejo de archivos en las solicitudes HTTP.
-  - `import { saveImage } from "../controllers/controller.create.js";`: Importa la función saveImage del controlador para manejar las solicitudes de carga de imágenes.
+   - `import { config } from "dotenv";`: Importa la función config de dotenv para cargar variables de entorno desde un archivo`.env`.
+   - `import multer from "multer";`: Importa el módulo Multer para el manejo de archivos en las solicitudes HTTP.
+   - `import { saveImage } from "../controllers/controller.create.js";`: Importa la función saveImage del controlador para manejar las solicitudes de carga de imágenes.
 
- 2. Configuración de Multer:
+  2. Configuración de Multer:
 
 - `config();`: Carga las variables de entorno desde un archivo`.env`.
   - `const upload = multer({ limits: { fieldSize: 10 * 1024 * 1024 } });`: Configura Multer para manejar la carga de archivos con un límite de tamaño de 10 MB.
 
- 3. Definición de rutas:
+  3. Definición de rutas:
 
 - `const router = Router();`: Crea un nuevo enrutador de Express.
   - `router.get('/');`: Define una ruta GET raíz que no tiene funcionalidad específica definida.
   - `router.post('/api', upload.array('imagen', 10), saveImage);`: Define una ruta POST '/api' que utiliza Multer para manejar la carga de archivos de imágenes y llama a la función saveImage del controlador para procesar la solicitud.
 
- 4. Exportación del enrutador:
+  4. Exportación del enrutador:
 
 - `export default router;`: Exporta el enrutador creado para ser utilizado en otras partes de la aplicación.
 
- En resumen, este archivo configura las rutas en el backend para manejar solicitudes HTTP, incluyendo la carga de archivos de imágenes mediante Multer y el uso de un controlador para procesar las solicitudes.Es importante tener configurado el archivo `.env` con las variables necesarias y tener instaladas las dependencias requeridas para que el código funcione correctamente.;
+  En resumen, este archivo configura las rutas en el backend para manejar solicitudes HTTP, incluyendo la carga de archivos de imágenes mediante Multer y el uso de un controlador para procesar las solicitudes.Es importante tener configurado el archivo `.env` con las variables necesarias y tener instaladas las dependencias requeridas para que el código funcione correctamente.;
 
----
-    Documentación de Controller.create;
----
-    El código implementa la funcionalidad para manejar la carga de imágenes a la plataforma de Cloudinary, comprimiendo las imágenes con la biblioteca Sharp y almacenando la información en una base de datos PostgreSQL.A continuación, se detalla cada parte del código:
+---;
+Documentación de Controller.create;
+ El código implementa la funcionalidad para manejar la carga de imágenes a la plataforma de Cloudinary, comprimiendo las imágenes con la biblioteca Sharp y almacenando la información en una base de datos PostgreSQL.A continuación, se detalla cada parte del código:
 
 1.Importación de módulos y configuración de Cloudinary:
 - `import cloudinaryV2 from 'cloudinary';`: Importa la biblioteca Cloudinary.
@@ -68,53 +71,54 @@ Documentación de routes.js;
    - `import sharp from 'sharp';`: Importa la biblioteca Sharp para la compresión de imágenes.
    - `import getConnection from '../database/connection.js';`: Importa una función que obtiene una conexión a la base de datos.
 
-2.Configuración de Cloudinary:
+ 2.Configuración de Cloudinary:
 - `config();`: Carga las variables de entorno desde un archivo`.env`.
    - `cloudinaryV2.config({ ... });`: Configura Cloudinary con las claves de API obtenidas de las variables de entorno.
 
-3.Definición de variables:
+ 3.Definición de variables:
 - `const tableName = 'imagen';`: Define el nombre de la tabla en la base de datos donde se guardarán los productos.
 
-4.Función`extractFileAndBody`:
+ 4.Función`extractFileAndBody`:
 - `const extractFileAndBody = (req) => { ... }`: Extrae los archivos y el cuerpo de la solicitud HTTP.
 
-5. Función`saveImage`:
+ 5. Función`saveImage`:
 - `export const saveImage = async (req, res) => { ... }`: Función principal para guardar imágenes y productos.
    - Verifica si se proporcionaron archivos en la solicitud.
    - Itera sobre cada imagen recibida, las comprime y las sube a Cloudinary.
    - Guarda la información del producto en la base de datos con las URLs de las imágenes.
    - Maneja las respuestas y errores de forma adecuada.
 
-6. Función`compressImage`:
+ 6. Función`compressImage`:
 - `const compressImage = async (file) => { ... }`: Función para comprimir imágenes usando Sharp.
 
-7. Función`cloudinaryUpload`:
+ 7. Función`cloudinaryUpload`:
 - `const cloudinaryUpload = async (file, compressedImagenData) => { ... }`: Función para subir imágenes a Cloudinary.
 
-8. Función`saveProductToDatabase`:
+ 8. Función`saveProductToDatabase`:
 - `const saveProductToDatabase = async (product) => { ... }`: Función para guardar productos en la base de datos PostgreSQL.
 
-En resumen, este código proporciona un flujo completo para manejar la carga de imágenes a Cloudinary, comprimir las imágenes y luego guardar la información del producto en una base de datos PostgreSQL.Es importante tener configuradas las variables de entorno(`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) y tener una base de datos PostgreSQL configurada y accesible para que el código funcione correctamente.
+ En resumen, este código proporciona un flujo completo para manejar la carga de imágenes a Cloudinary, comprimir las imágenes y luego guardar la información del producto en una base de datos PostgreSQL.Es importante tener configuradas las variables de entorno(`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) y tener una base de datos PostgreSQL configurada y accesible para que el código funcione correctamente.
 
----
-    Documentación de getConnection;
----
+---;
+Documentación de getConnection;
 
-    Este código utiliza el módulo dotenv para cargar las variables de entorno desde un archivo`.env`, y luego crea una conexión a una base de datos PostgreSQL utilizando el módulo pg.
 
-1. Importación de módulos y configuración de variables de entorno:
+ Este código utiliza el módulo dotenv para cargar las variables de entorno desde un archivo`.env`, y luego crea una conexión a una base de datos PostgreSQL utilizando el módulo pg.
+
+ 1. Importación de módulos y configuración de variables de entorno:
 - `import { config } from 'dotenv';`: Importa la función `config` de la biblioteca dotenv para cargar variables de entorno desde un archivo`.env`.
    - `import pgk from 'pg';`: Importa el módulo pg para la conexión con la base de datos PostgreSQL.
    - `config();`: Carga las variables de entorno desde un archivo`.env`.
 
-2. Creación de la conexión a la base de datos:
+ 2. Creación de la conexión a la base de datos:
 - `const { Pool } = pgk;`: Desestructura la clase `Pool` del módulo pg.
    - `const pool = new Pool({ ... });`: Crea un nuevo objeto `Pool` para manejar las conexiones a la base de datos PostgreSQL.Se utiliza la URL de conexión almacenada en`process.env.POSTGRES_URL_URL`.
 
-3. Función`getConnection`:
+ 3. Función`getConnection`:
 - `const getConnection = async () => { ... }`: Define una función asincrónica para obtener una conexión a la base de datos.
    - Intenta conectarse a la base de datos utilizando`pool.connect()`.
    - Devuelve un objeto que contiene el cliente conectado y la instancia del pool de conexiones.
    - Maneja los errores de conexión e imprime los errores en la consola si ocurren.
 
-En resumen, este código configura las variables de entorno y establece una conexión a una base de datos PostgreSQL utilizando el módulo pg.La función `getConnection` permite obtener una conexión a la base de datos de manera asincrónica y maneja los errores de conexión de manera adecuada.Es importante tener configurada la URL de conexión en el archivo `.env` y tener una base de datos PostgreSQL disponible para que el código funcione correctamente.;
+ En resumen, este código configura las variables de entorno y establece una conexión a una base de datos PostgreSQL utilizando el módulo pg.La función `getConnection` permite obtener una conexión a la base de datos de manera asincrónica y maneja los errores de conexión de manera adecuada.Es importante tener configurada la URL de conexión en el archivo `.env` y tener una base de datos PostgreSQL disponible para que el código funcione correctamente.;
+---;
