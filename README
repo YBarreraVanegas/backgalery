@@ -68,3 +68,30 @@ Este código utiliza el módulo dotenv para cargar las variables de entorno desd
 En resumen, este código configura las variables de entorno y establece una conexión a una base de datos PostgreSQL utilizando el módulo pg.La función `getConnection` permite obtener una conexión a la base de datos de manera asincrónica y maneja los errores de conexión de manera adecuada.Es importante tener configurada la URL de conexión en el archivo `.env` y tener una base de datos PostgreSQL disponible para que el código funcione correctamente.
 
 ---;
+# Documentación de routes.js
+
+Este archivo define las rutas y maneja las solicitudes HTTP en el backend utilizando Express y Multer para el manejo de archivos.
+
+## Importación de módulos y configuración:
+
+- `import { Router } from "express";`: Importa el módulo Router de Express para definir las rutas.
+- `import { config } from "dotenv";`: Importa la función config de dotenv para cargar variables de entorno desde un archivo`.env`.
+- `import multer from "multer";`: Importa el módulo Multer para el manejo de archivos en las solicitudes HTTP.
+- `import { saveImage } from "../controllers/controller.create.js";`: Importa la función saveImage del controlador para manejar las solicitudes de carga de imágenes.
+
+## Configuración de Multer:
+
+- `config();`: Carga las variables de entorno desde un archivo`.env`.
+- `const upload = multer({ limits: { fieldSize: 10 * 1024 * 1024 } });`: Configura Multer para manejar la carga de archivos con un límite de tamaño de 10 MB.
+
+## Definición de rutas:
+
+- `const router = Router();`: Crea un nuevo enrutador de Express.
+- `router.get('/');`: Define una ruta GET raíz que no tiene funcionalidad específica definida.
+- `router.post('/api', upload.array('imagen', 10), saveImage);`: Define una ruta POST '/api' que utiliza Multer para manejar la carga de archivos de imágenes y llama a la función saveImage del controlador para procesar la solicitud.
+
+## Exportación del enrutador:
+
+- `export default router;`: Exporta el enrutador creado para ser utilizado en otras partes de la aplicación.
+
+En resumen, este archivo configura las rutas en el backend para manejar solicitudes HTTP, incluyendo la carga de archivos de imágenes mediante Multer y el uso de un controlador para procesar las solicitudes.Es importante tener configurado el archivo `.env` con las variables necesarias y tener instaladas las dependencias requeridas para que el código funcione correctamente.;
