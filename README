@@ -1,4 +1,10 @@
 
+<<<<<<< HEAD
+=======
+
+---
+
+>>>>>>> 6732e5f93fc8d138667bddf180136d750abf2b24
 Backend API Documentation
 
 Este backend maneja las solicitudes enviadas desde el front y crea una API REST para gestionar los datos recibidos.
