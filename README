@@ -2,7 +2,7 @@
 
 ---
 
-# Backend API Documentation
+<h1>Backend API Documentation</h1>
 
 Este backend maneja las solicitudes enviadas desde el front y crea una API REST para gestionar los datos recibidos.
 
