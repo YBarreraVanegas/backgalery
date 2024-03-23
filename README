@@ -1,7 +1,12 @@
 
-En este backend se maneja las solicitudes que se hacen desde el front se crea una apiRest para manejar los datos recividos;
---
-# Documentación de Controller.create
+
+---
+
+# Backend API Documentation
+
+Este backend maneja las solicitudes enviadas desde el front y crea una API REST para gestionar los datos recibidos.
+
+## Documentación de Controller.create
 
 El código implementa la funcionalidad para manejar la carga de imágenes a la plataforma de Cloudinary, comprimiendo las imágenes con la biblioteca Sharp y almacenando la información en una base de datos PostgreSQL.A continuación, se detalla cada parte del código:
 
@@ -39,25 +44,27 @@ El código implementa la funcionalidad para manejar la carga de imágenes a la p
 
 En resumen, este código proporciona un flujo completo para manejar la carga de imágenes a Cloudinary, comprimir las imágenes y luego guardar la información del producto en una base de datos PostgreSQL.Es importante tener configuradas las variables de entorno(`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) y tener una base de datos PostgreSQL configurada y accesible para que el código funcione correctamente.
 
+---
+
+## Documentación de getConnection
+
+Este código utiliza el módulo dotenv para cargar las variables de entorno desde un archivo`.env`, y luego crea una conexión a una base de datos PostgreSQL utilizando el módulo pg.
+
+1. ** Importación de módulos y configuración de variables de entorno:**
+    - `import { config } from 'dotenv';`: Importa la función `config` de la biblioteca dotenv para cargar variables de entorno desde un archivo`.env`.
+   - `import pgk from 'pg';`: Importa el módulo pg para la conexión con la base de datos PostgreSQL.
+   - `config();`: Carga las variables de entorno desde un archivo`.env`.
+
+2. ** Creación de la conexión a la base de datos:**
+    - `const { Pool } = pgk;`: Desestructura la clase `Pool` del módulo pg.
+   - `const pool = new Pool({ ... });`: Crea un nuevo objeto `Pool` para manejar las conexiones a la base de datos PostgreSQL.Se utiliza la URL de conexión almacenada en`process.env.POSTGRES_URL_URL`.
+
+3. ** Función`getConnection`:**
+    - `const getConnection = async () => { ... }`: Define una función asincrónica para obtener una conexión a la base de datos.
+   - Intenta conectarse a la base de datos utilizando`pool.connect()`.
+   - Devuelve un objeto que contiene el cliente conectado y la instancia del pool de conexiones.
+   - Maneja los errores de conexión e imprime los errores en la consola si ocurren.
+
+En resumen, este código configura las variables de entorno y establece una conexión a una base de datos PostgreSQL utilizando el módulo pg.La función `getConnection` permite obtener una conexión a la base de datos de manera asincrónica y maneja los errores de conexión de manera adecuada.Es importante tener configurada la URL de conexión en el archivo `.env` y tener una base de datos PostgreSQL disponible para que el código funcione correctamente.
+
 ---;
-
-Documentación de getConnection
-Este código utiliza el módulo dotenv para cargar las variables de entorno desde un archivo.env, y luego crea una conexión a una base de datos PostgreSQL utilizando el módulo pg.
-
-Importación de módulos y configuración de variables de entorno:
-
-import { config } from 'dotenv';: Importa la función config de la biblioteca dotenv para cargar variables de entorno desde un archivo.env.;
-import pgk from 'pg';: Importa el módulo pg para la conexión con la base de datos PostgreSQL.
-    config();: Carga las variables de entorno desde un archivo.env.
-Creación de la conexión a la base de datos:
-
-const { Pool } = pgk;: Desestructura la clase Pool del módulo pg.;
-const pool = new Pool({ ... });: Crea un nuevo objeto Pool para manejar las conexiones a la base de datos PostgreSQL.Se utiliza la URL de conexión almacenada en process.env.POSTGRES_URL_URL.
-Función getConnection:
-
-const getConnection = async () => { ... }: Define una función asincrónica para obtener una conexión a la base de datos.
-    Intenta conectarse a la base de datos utilizando pool.connect().
-Devuelve un objeto que contiene el cliente conectado y la instancia del pool de conexiones.
-Maneja los errores de conexión e imprime los errores en la consola si ocurren.
-En resumen, este código configura las variables de entorno y establece una conexión a una base de datos PostgreSQL utilizando el módulo pg.La función getConnection permite obtener una conexión a la base de datos de manera asincrónica y maneja los errores de conexión de manera adecuada.Es importante tener configurada la URL de conexión en el archivo.env y tener una base de datos PostgreSQL disponible para que el código funcione correctamente.
-
