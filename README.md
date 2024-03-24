@@ -1,4 +1,4 @@
-**Backend API Documentation**
+**Backend API Documentación**
 
 Este backend maneja las solicitudes enviadas desde el front y crea una API REST para gestionar los datos recibidos.
 
@@ -357,3 +357,65 @@ Este código establece una conexión a la base de datos PostgreSQL.
    ```
 
    - **Descripción**: Exporta la función `updateImage` para que esté disponible para ser utilizada en otras partes de la aplicación.
+     Aquí está la documentación detallada para la función `deleteImage` que maneja la eliminación de imágenes de la base de datos:
+
+---
+
+**Documentación de la Función `deleteImage`**
+
+1. **Importación de Módulos y Configuración:**
+
+   ```javascript
+   import getConnection from '../database/connection.js'
+   import { config } from 'dotenv'
+   ```
+
+   - **`getConnection`**: Importa la función para obtener una conexión a la base de datos.
+   - **`config`**: Importa la función `config` de dotenv para cargar las variables de entorno.
+
+2. **Configuración de Variables de Entorno:**
+
+   ```javascript
+   config()
+   const tableName = process.env.DATAIMAGEN
+   ```
+
+   - **Descripción**: Carga las variables de entorno y almacena el nombre de la tabla en la base de datos donde se guardarán las imágenes.
+
+3. **Función `deleteImage`**:
+
+   ```javascript
+   export const deleteImage = async (req, res) => {
+     // Código de la función deleteImage
+   }
+   ```
+
+   - **Descripción**: Función asincrónica para eliminar una imagen de la base de datos.
+
+4. **Parámetros de Entrada**:
+
+   - **`req`**: Objeto de solicitud HTTP que contiene los datos de la solicitud, incluido el ID de la imagen a eliminar.
+   - **`res`**: Objeto de respuesta HTTP utilizado para enviar la respuesta al cliente.
+
+5. **Pasos de la Función**:
+
+   - **Obtención de Conexión**: Se obtiene una conexión a la base de datos utilizando la función `getConnection`.
+   - **Verificación de Conexión**: Se verifica si la conexión a la base de datos fue exitosa.
+   - **Eliminación en la Base de Datos**: Se ejecuta una consulta para eliminar la imagen de la base de datos utilizando el ID proporcionado en la solicitud.
+   - **Manejo de Resultados**: Se manejan los resultados de la consulta para verificar si la eliminación fue exitosa.
+   - **Respuesta al Cliente**: Se envía una respuesta al cliente indicando el éxito o fracaso de la eliminación.
+
+6. **Excepciones Manejadas**:
+
+   - **Errores de Conexión**: Se manejan errores que puedan ocurrir al conectar con la base de datos.
+   - **Errores al Eliminar**: Se manejan errores que puedan ocurrir durante el proceso de eliminación de la imagen.
+
+7. **Exportación de la Función**:
+
+   ```javascript
+   export const deleteImage = async (req, res) => {
+     // Código de la función deleteImage
+   }
+   ```
+
+   - **Descripción**: Exporta la función `deleteImage` para que esté disponible para ser utilizada en otras partes de la aplicación.
