@@ -11,7 +11,7 @@ cloudinaryV2.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-const tableName = 'imagen';
+const tableName = process.env.DATAIMAGEN;
 
 
 // declarar una variable para manejar la req

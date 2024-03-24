@@ -1,9 +1,10 @@
 import app from './src/app.js';
-import { EventEmitter } from 'events';
-EventEmitter.defaultMaxListeners = 20;
+import { config } from 'dotenv';
 
-const PORT = process.env.URL || 4000;
+config();
+const PORT = process.env.URL || 3000;
 
+// Iniciar el servidor y escuchar en el puerto especificado
 app.listen(PORT, () => {
-    console.log('server corriendo en el port', PORT);
+    console.log('Servidor corriendo en el puerto', PORT);
 });

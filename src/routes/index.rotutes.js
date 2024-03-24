@@ -2,11 +2,19 @@ import { Router } from "express";
 import { config } from "dotenv";
 import multer from "multer";
 import { saveImage } from "../controllers/controller.create.js";
-
+import { getAllImages } from "../controllers/controller.get.all.js";
+import { getOneImage } from "../controllers/controller.get.one.js   ";
+import cors from 'cors';
+import { deleteImage } from "../controllers/controller.delete.js";
+import { updateImage } from "../controllers/controller.update.js";
+cors();
 config();
 const upload = multer({ limits: { fieldSize: 10 * 1024 * 1024 } });
 const router = Router();
-router.get('/');
+router.get('/api', getAllImages);
+router.get('/api/:id', getOneImage);
+router.put('/api', upload.array('imagen', 10), updateImage);
 router.post('/api', upload.array('imagen', 10), saveImage);
+router.delete('/api/:id', deleteImage);
 
 export default router;
