@@ -7,14 +7,23 @@ import { getOneImage } from "../controllers/controller.get.one.js   ";
 import cors from 'cors';
 import { deleteImage } from "../controllers/controller.delete.js";
 import { updateImage } from "../controllers/controller.update.js";
+import { registerUser } from "../controllers/controller.create.acount.js";
+import { auth, authenticateToken, verifyToken } from "../middelware/middel.js";
+import { saveProfileToDatabase, updateProfileToDatabase } from "../controllers/controller.perfil.js";
+import { getOnePerfil } from "../controllers/controller.getPerfil.js";
 cors();
 config();
 const upload = multer({ limits: { fieldSize: 10 * 1024 * 1024 } });
 const router = Router();
+
+router.post('/perfil', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, saveProfileToDatabase);
+router.put('/perfil/:id', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, updateProfileToDatabase);
 router.get('/api', getAllImages);
 router.get('/api/:id', getOneImage);
-router.put('/api', upload.array('imagen', 10), updateImage);
-router.post('/api', upload.array('imagen', 10), saveImage);
-router.delete('/api/:id', deleteImage);
-
+router.get('/perfil/:id', getOnePerfil);
+router.put('/api', upload.array('imagen', 10), authenticateToken, verifyToken, updateImage);
+router.post('/api', authenticateToken, verifyToken, upload.array('imagen', 10), saveImage);
+router.delete('/api/:id', authenticateToken, verifyToken, deleteImage);
+router.post('/register', registerUser);
+router.post('/login', auth);
 export default router;
