@@ -2,7 +2,7 @@ import { Router } from "express";
 import { config } from "dotenv";
 import multer from "multer";
 import { saveImage } from "../controllers/controller.create.js";
-import { getAllImages } from "../controllers/controller.get.all.js";
+import { getAllImages, getAllPerfils } from "../controllers/controller.get.all.js";
 import { getOneImage } from "../controllers/controller.get.one.js   ";
 import cors from 'cors';
 import { deleteImage } from "../controllers/controller.delete.js";
@@ -17,13 +17,18 @@ const upload = multer({ limits: { fieldSize: 10 * 1024 * 1024 } });
 const router = Router();
 
 router.post('/perfil', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, saveProfileToDatabase);
+router.get('/perfil', getAllPerfils);
 router.put('/perfil/:id', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, updateProfileToDatabase);
+router.get('/perfil/:id', getOnePerfil);
+
+
+router.post('/register', registerUser);
+router.post('/login', auth);
+
+
 router.get('/api', getAllImages);
 router.get('/api/:id', getOneImage);
-router.get('/perfil/:id', getOnePerfil);
 router.put('/api', upload.array('imagen', 10), authenticateToken, verifyToken, updateImage);
 router.post('/api', authenticateToken, verifyToken, upload.array('imagen', 10), saveImage);
 router.delete('/api/:id', authenticateToken, verifyToken, deleteImage);
-router.post('/register', registerUser);
-router.post('/login', auth);
 export default router;
