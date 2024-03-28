@@ -37,12 +37,12 @@ export const saveProductToDatabase = async (product) => {
         client = connectedClient;
 
         const query = `
-            INSERT INTO ${tableNameImage} (titulo, descripcion, imagen, usuario_id)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO ${tableNameImage} (titulo, descripcion, imagen, categorias, usuario_id)
+            VALUES ($1, $2, $3, $5, $4)
             RETURNING id;
         `;
 
-        const values = [product.titulo, product.descripcion, product.imagen, product.usuario_id];
+        const values = [product.titulo, product.descripcion, product.imagen, product.usuario_id, product.categorias];
 
         const result = await client.query(query, values);
     } catch (error) {
@@ -55,7 +55,7 @@ export const saveProductToDatabase = async (product) => {
     }
 };
 ///Imagen
-export const updateImageUrlInDatabase = async (id, imageUrl, descripcion, titulo) => {
+export const updateImageUrlInDatabase = async (id, imageUrl, descripcion, titulo, categorias) => {
     let client;
     try {
         const { client: connectedClient } = await getConnection();
@@ -63,12 +63,12 @@ export const updateImageUrlInDatabase = async (id, imageUrl, descripcion, titulo
 
         const query = `
         UPDATE ${tableNameImage}
-        SET imagen = $1, titulo = $3, descripcion = $2
-        WHERE id = $4
+        SET imagen = $1, titulo = $3, descripcion = $2, categorias= $4
+        WHERE id = $5
         RETURNING imagen;
         `;
 
-        const values = [imageUrl, titulo, descripcion, id];
+        const values = [imageUrl, titulo, descripcion, id, categorias];
         const result = await client.query(query, values);
 
         if (result.rows.length === 0) {

@@ -18,7 +18,6 @@ const extractFileAndBody = (req) => {
 export const saveImage = async (req, res) => {
     try {
         const { files, body } = extractFileAndBody(req);
-
         // Verificamos que se hayan enviado archivos
         if (!files || files.length === 0) {
             console.error('Error: No se proporcionaron imágenes o las imágenes están vacías.');
@@ -41,6 +40,7 @@ export const saveImage = async (req, res) => {
             usuario_id: userId,
             titulo: body.titulo,
             descripcion: body.descripcion,
+            categorias: body.categorias,
             imagen: imagenUrls
         });
 
