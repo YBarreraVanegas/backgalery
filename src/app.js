@@ -3,7 +3,7 @@ import cors from 'cors';
 import router from './routes/index.rotutes.js';
 const app = express();
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://fotofascinante.onrender.com',
     optionsSuccessStatus: 200, // Algunos navegadores antiguos (como IE11) pueden necesitar esto para que funcione el CORS
 };
 app.use(cors(corsOptions));
