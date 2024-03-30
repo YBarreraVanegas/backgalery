@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import { compressImage } from '../util/compressImage.js';
 import { cloudinaryUpdate, cloudinaryUpload } from '../util/cloudinaryUpload.js';
-import { savePerfilToDatabase, updatePerfilInDatabase } from '../util/saveData.js';
+import { savePerfilToDatabase, updatePerfilInDatabase, addFavInData } from '../util/saveData.js';
 import { getUsuarioIdFromDatabasePerfil, } from './controller.getusuario.js';
 
 
@@ -37,7 +37,7 @@ export const saveProfileToDatabase = async (req, res) => {
             usuario_id: userId,
             nombre: body.nombre,
             descripcion: body.descripcion,
-            imagen_perfil: imagenUrls
+            imagen_perfil: imagenUrls,
         });
 
         res.status(200).json({ message: 'Producto creado correctamente', imagenUrls });
@@ -73,7 +73,7 @@ export const updateProfileToDatabase = async (req, res) => {
 
 
 
-        const updatedImageUrl = await updatePerfilInDatabase(id, newImageUrl, nombre, descripcion, id);
+        const updatedImageUrl = await updatePerfilInDatabase(newImageUrl, nombre, descripcion, id);
 
         res.status(200).json({ message: 'perfil actualizada correctamente', imageUrl: updatedImageUrl });
     } catch (error) {
@@ -86,6 +86,22 @@ export const updateProfileToDatabase = async (req, res) => {
     }
 };
 
+
+
+export const addFavorites = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { favoritos, guardados } = req.body;
+
+        // Llama a la función para actualizar los favoritos en la base de datos
+        const updatedProfile = await addFavInData(id, favoritos, guardados);
+
+        res.status(200).json({ message: 'Favoritos actualizados correctamente', profile: updatedProfile });
+    } catch (error) {
+        console.error('Error al actualizar los favoritos:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 
 

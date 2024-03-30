@@ -118,3 +118,83 @@ export const updatePerfilInDatabase = async (id, imageUrl, descripcion, nombre) 
         }
     }
 };
+
+
+export const addFavInData = async (id, nuevoFavorito, nuevoGuardado) => {
+    let client;
+    try {
+        // Obtener la conexión a la base de datos
+        const { client: connectedClient } = await getConnection();
+        client = connectedClient;
+
+        // Consultar el perfil actual para obtener los favoritos actuales
+        const consultaPerfil = `
+            SELECT favoritos, guardados
+            FROM ${tableName}
+            WHERE id = $1;
+        `;
+        const perfilResult = await client.query(consultaPerfil, [id]);
+        let favoritosActuales = perfilResult.rows[0]?.favoritos || [];
+        let guardadosActuales = perfilResult.rows[0]?.guardados || [];
+
+        // Verificar si el nuevo guardado ya existe en la lista actual
+        if (nuevoGuardado !== undefined && guardadosActuales.includes(nuevoGuardado)) {
+            throw new Error('El valor ya existe en la lista de guardados');
+        }
+
+        // Si el nuevo guardado no existe en la lista actual, agregarlo
+        if (nuevoGuardado !== undefined) {
+            guardadosActuales.push(nuevoGuardado);
+        }
+
+        // Verificar si el nuevo favorito ya existe en la lista actual
+        if (nuevoFavorito !== undefined && favoritosActuales.includes(nuevoFavorito)) {
+            throw new Error('El valor ya existe en la lista de favoritos');
+        }
+
+        // Si el nuevo favorito no existe en la lista actual, agregarlo
+        if (nuevoFavorito !== undefined) {
+            favoritosActuales.push(nuevoFavorito);
+        }
+
+        // Actualizar la columna favoritos y guardados con los nuevos valores
+        const query = `
+            UPDATE ${tableName}
+            SET favoritos = $1,
+                guardados = $2
+            WHERE id = $3
+            RETURNING favoritos, guardados;
+        `;
+
+        // Ejecutar la consulta con los valores proporcionados
+        const values = [favoritosActuales, guardadosActuales, id];
+        const result = await client.query(query, values);
+
+        // Verificar si se encontró el perfil y actualizar los favoritos
+        if (result.rows.length === 0) {
+            throw new Error('No se encontró el perfil con el ID proporcionado');
+        }
+
+        // Mostrar los favoritos y guardados actualizados en la base de datos
+        console.log('Favoritos actualizados en la base de datos:', result.rows[0].favoritos);
+        console.log('Guardados actualizados en la base de datos:', result.rows[0].guardados);
+
+        // Devolver los favoritos actualizados
+        return result.rows[0].favoritos;
+    } catch (error) {
+        // Manejar errores durante la actualización
+        console.error('Error al actualizar los favoritos en la base de datos:', error.message);
+        throw error;
+    } finally {
+        // Liberar la conexión al cliente de la base de datos
+        if (client) {
+            client.release();
+        }
+    }
+};
+
+
+
+
+
+

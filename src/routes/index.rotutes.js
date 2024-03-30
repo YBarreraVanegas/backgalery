@@ -9,7 +9,7 @@ import { deleteImage } from "../controllers/controller.delete.js";
 import { updateImage } from "../controllers/controller.update.js";
 import { registerUser } from "../controllers/controller.create.acount.js";
 import { auth, authenticateToken, verifyToken } from "../middelware/middel.js";
-import { saveProfileToDatabase, updateProfileToDatabase } from "../controllers/controller.perfil.js";
+import { addFavorites, saveProfileToDatabase, updateProfileToDatabase } from "../controllers/controller.perfil.js";
 import { getOnePerfil } from "../controllers/controller.getPerfil.js";
 cors();
 config();
@@ -19,12 +19,12 @@ const router = Router();
 router.post('/perfil', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, saveProfileToDatabase);
 router.get('/perfil', getAllPerfils);
 router.put('/perfil/:id', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, updateProfileToDatabase);
+router.post('/fav/:id', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, addFavorites);
 router.get('/perfil/:id', getOnePerfil);
 
 
 router.post('/register', registerUser);
 router.post('/login', auth);
-
 
 router.get('/api', getAllImages);
 router.get('/api/:id', getOneImage);
