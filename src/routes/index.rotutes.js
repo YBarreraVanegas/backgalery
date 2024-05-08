@@ -5,7 +5,7 @@ import { saveImage } from "../controllers/controller.create.js";
 import { getAllImages, getAllPerfils } from "../controllers/controller.get.all.js";
 import { getOneImage } from "../controllers/controller.get.one.js   ";
 import cors from 'cors';
-import { deleteImage } from "../controllers/controller.delete.js";
+import { deleteCategoria, deleteImage } from "../controllers/controller.delete.js";
 import { updateImage } from "../controllers/controller.update.js";
 import { registerUser } from "../controllers/controller.create.acount.js";
 import { auth, authenticateToken, verifyToken } from "../middelware/middel.js";
@@ -20,6 +20,7 @@ router.post('/perfil', upload.array('imagen_perfil', 10), authenticateToken, ver
 router.get('/perfil', getAllPerfils);
 router.put('/perfil/:id', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, updateProfileToDatabase);
 router.post('/fav/:id', upload.array('imagen_perfil', 10), authenticateToken, verifyToken, addFavorites);
+router.delete('/fav/:id', authenticateToken, verifyToken, deleteCategoria);
 router.get('/perfil/:id', getOnePerfil);
 
 

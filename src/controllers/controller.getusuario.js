@@ -57,3 +57,34 @@ export const getUsuarioIdFromDatabasePerfil = async (id) => {
         }
     }
 };
+
+export const updateFavoritesOrSaved = async (id, type, imageIds) => {
+    const { client } = await getConnection();
+    try {
+        let columnToUpdate = type === 'favoritos' ? 'favoritos' : 'guardados';
+
+        // Obtener los favoritos/guardados actuales del perfil
+        const query = `SELECT ${columnToUpdate} FROM perfil WHERE id = $1`;
+        const result = await client.query(query, [id]);
+
+        let updatedIds = [];
+        if (result.rows.length > 0) {
+            const currentIds = result.rows[0][columnToUpdate] || [];
+            if (type === 'favoritos') {
+                updatedIds = [...currentIds, ...imageIds.filter(id => !currentIds.includes(id))];
+            } else {
+                updatedIds = currentIds.filter(id => !imageIds.includes(id));
+            }
+        } else {
+            throw new Error('Perfil no encontrado');
+        }
+
+        // Actualizar la columna favoritos/guardados en la base de datos
+        const updateQuery = `UPDATE perfil SET ${columnToUpdate} = $1 WHERE id = $2 RETURNING *`;
+        const updateResult = await client.query(updateQuery, [updatedIds, id]);
+
+        return updateResult.rows[0];
+    } finally {
+        client.release();
+    }
+};

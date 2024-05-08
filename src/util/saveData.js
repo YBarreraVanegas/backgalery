@@ -36,13 +36,16 @@ export const saveProductToDatabase = async (product) => {
         const { pool, client: connectedClient } = await getConnection();
         client = connectedClient;
 
+        // Verificar si product.imagen es una cadena antes de aplicar replace
+        const imageUrl = typeof product.imagen === 'string' ? product.imagen.replace(/[{}]/g, '') : product.imagen;
+
         const query = `
             INSERT INTO ${tableNameImage} (titulo, descripcion, imagen, categorias, usuario_id)
             VALUES ($1, $2, $3, $5, $4)
             RETURNING id;
         `;
 
-        const values = [product.titulo, product.descripcion, product.imagen, product.usuario_id, product.categorias];
+        const values = [product.titulo, product.descripcion, imageUrl, product.usuario_id, product.categorias];
 
         const result = await client.query(query, values);
     } catch (error) {
@@ -54,6 +57,8 @@ export const saveProductToDatabase = async (product) => {
         }
     }
 };
+
+
 ///Imagen
 export const updateImageUrlInDatabase = async (id, imageUrl, descripcion, titulo, categorias) => {
     let client;

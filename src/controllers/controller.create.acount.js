@@ -27,13 +27,19 @@ export const registerUser = async (req, res) => {
                 [email, hashedPassword]
             );
 
-            res.status(201).json({ id: result.rows[0].id, email: result.rows[0].email });
+            // Generar token JWT
+            const token = jw.sign({ userId: result.rows[0].id, email: result.rows[0].email }, secretKey, { expiresIn: '1h' });
+
+            res.status(201).json({ id: result.rows[0].id, email: result.rows[0].email, token }); // Devolver el token en la respuesta
         } catch (error) {
             console.error('Error al registrar usuario:', error);
             res.status(500).send('Internal Server Error');
         }
     });
 };
+
+
+
 export const loginUser = async (req, res) => {
     upload(req, res, async function (err) {
         if (err) {
